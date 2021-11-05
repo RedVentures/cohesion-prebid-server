@@ -1,7 +1,7 @@
 jobs:
   test:
     executor:
-      base-executor
+      docker
     working_directory:
       ~/cohesion-prebid
     steps:
