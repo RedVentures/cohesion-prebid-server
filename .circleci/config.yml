@@ -1,0 +1,28 @@
+jobs:
+  test:
+    executor:
+      base-executor
+    working_directory:
+      ~/cohesion-prebid
+    steps:
+      - setup_remote_docker
+      - checkout:
+          path: ~/cohesion-prebid
+      - run:
+          name: "docker login"
+          command: docker login -u $ARTIFACTORY_USER -p $ARTIFACTORY_TOKEN $ARTIFACTORY_PIPELINE_REGISTRY
+      - run:
+          name: "make test"
+          command:  make test
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test:
+          context: cohesion
+          filters:
+            branches:
+              ignore:
+                - development # development has it's own workflow.
+                - main # main is tested when tags are created.
